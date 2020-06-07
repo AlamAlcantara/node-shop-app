@@ -11,16 +11,15 @@ exports.getAddProduct = (req, res, next) => {
 
 
 exports.postAddProduct =  (req, res, next) => {
+    const user = req.user;
+
     const title = req.body.title;
     const price = req.body.price;
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
-    req.user.createProduct({
-        title: title,
-        price: price,
-        imageUrl: imageUrl,
-        description: description
-    }).then((result) => {
+    const product = new Product(title, price, description, imageUrl, null, user._id);
+    product.save()
+    .then((result) => {
         console.log('PRODUCT CREATED');
         res.redirect('/admin/products')
     })
@@ -35,10 +34,8 @@ exports.getEditProduct = (req, res, next) => {
     }
 
     const productId = req.params.productId;
-    req.user.getProducts({id: productId})
-    // Product.findByPk(productId)
-    .then(products => {
-        const product = products[0];
+    Product.findById(productId)
+    .then(product => {
         if(!product){
             return res.redirect('/');
         }
@@ -62,25 +59,24 @@ exports.postEditProduct = (req, res, next) => {
     const updatedDesc = req.body.description;
     const updatedImage = req.body.imageUrl;
 
-    Product.findByPk(prodId)
-    .then(product => {
-        product.title = updatedTitle;
-        product.price = updatedPrice;
-        product.imageUrl = updatedImage;
-        product.description = updatedDesc;
-        return product.save();
-    })
+    const product = new Product(
+        updatedTitle, 
+        updatedPrice, 
+        updatedDesc, 
+        updatedImage, 
+        prodId
+    );
+
+    product.save()
     .then(() => {
         res.redirect('/admin/products');
     })
     .catch(err => console.log(err));
-
-    
 }
 
 exports.getProducts = (req, res, next) => {
-    req.user.getProducts()
-    // Product.findAll()
+    // req.user.getProducts()
+    Product.fetchAll()
     .then(products => {
         res.render('admin/products', {
             prods: products, 
@@ -93,12 +89,8 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
-    Product.findByPk(prodId)
-    .then(product => {
-        return product.destroy();
-    })
-    .then(result => {
-        console.log('PRODUCT DESTROYED')
+    Product.deleteById(prodId)
+    .then(() => {
         res.redirect('/admin/products');
     })
     .catch(err => console.log(err))

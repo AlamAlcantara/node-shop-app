@@ -19,6 +19,7 @@
     "express-handlebars": "^3.0.2",
     "install": "^0.13.0",
     "mongodb": "^3.5.7",
+    "mongoose": "^5.9.18",
     "mysql2": "^2.1.0",
     "pug": "^2.0.4",
     "sequelize": "^5.21.9"

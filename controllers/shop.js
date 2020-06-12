@@ -11,7 +11,8 @@ exports.getProducts = (req, res, next) => {
             path: '/products', 
             hasProducts: products.length > 0,
             activeShop: true, 
-            productCSS: true});
+            productCSS: true, 
+            isAuthenticated: req.session.isLoggedIn });
     })
     .catch(err => console.log(err));
 
@@ -25,7 +26,8 @@ exports.getProduct = (req, res, next) => {
         {
             product: product, 
             pageTitle: product.title, 
-            path: '/products'
+            path: '/products',
+            isAuthenticated: req.session.isLoggedIn
         })
     })
     .catch(err => console.log(err));
@@ -38,7 +40,8 @@ exports.getIndex = (req, res, next) => {
         res.render('shop/index', {
             prods: products, 
             pageTitle: 'All Products', 
-            path: '/'
+            path: '/',
+            isAuthenticated: req.session.isLoggedIn
         });
     })
     .catch(err => console.log(err));
@@ -53,7 +56,8 @@ exports.getCart = (req, res, next) => {
         res.render('shop/cart', {
             path: '/cart',
             pageTitle: 'Your Cart',
-            products: products 
+            products: products,
+            isAuthenticated: req.session.isLoggedIn 
         })
     })
     .catch(err => console.log(err));
@@ -76,16 +80,18 @@ exports.getCheckout = (req, res, next) => {
     res.render('shop/checkout', {
         path: '/checkout',
         pageTitle: 'Your checkout', 
+        isAuthenticated: req.session.isLoggedIn
     })
 }
 
 exports.getOrders = (req, res, next) => {
-    Order.find({'user.userId': req.user._id})
+    Order.find({'user.userId': req.session.user._id})
     .then(orders => {
         res.render('shop/orders', {
             path: '/orders',
             pageTitle: 'Your orders',
-            orders: orders
+            orders: orders,
+            isAuthenticated: req.session.isLoggedIn
         })
     })
     .catch(err => console.log(err));
@@ -115,8 +121,8 @@ exports.postOrder = (req, res, next) => {
 
         const order = new Order({
             user:{
-                name: req.user.name,
-                userId: req.user
+                name: req.session.user.name,
+                userId: req.session.user
             },
             products: products
         });

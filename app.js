@@ -16,11 +16,12 @@ const authRoutes = require('./routes/auth');
 const errorController = require('./controllers/error');
 
 const User = require('./models/user');
+const {MONGODB_URI} = require('./config');
+
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-const MONGODB_URI = 'mongodb+srv://AlamAlcantara:P5yJwqYKu2pTKHvA@cluster0-94bqq.mongodb.net/test?retryWrites=true&w=majority';
 
 const store = new MongoDBStore({
     uri: MONGODB_URI,

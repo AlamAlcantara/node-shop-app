@@ -16,7 +16,7 @@ const authRoutes = require('./routes/auth');
 const errorController = require('./controllers/error');
 
 const User = require('./models/user');
-const {MONGODB_URI} = require('./config');
+const {MONGODB_URI, PORT} = require('./config');
 
 
 app.set('view engine', 'ejs');
@@ -72,6 +72,6 @@ mongoose
     .connect(MONGODB_URI)
     .then(result => {
         console.log('CONNECTED!');
-        app.listen(5000);
+        app.listen(PORT);
     })
     .catch(err => console.log(err));

@@ -15,7 +15,6 @@ router.get('/products', adminController.getProducts);
 // /admin/add-product => POST
 router.post('/add-product',[
     body('title', 'Invalid title').trim().isString().isLength({min: 3}),
-    body('imageUrl', 'Invalid image Url').trim().isURL(),
     body('price', 'Invalid price').isFloat(),
     body('description', 'Invalid description').trim().isLength({min: 5, max: 200})
 ], isAuthMiddleWare, adminController.postAddProduct);
@@ -24,7 +23,6 @@ router.get('/edit-product/:productId', isAuthMiddleWare, adminController.getEdit
 
 router.post('/edit-product',[
     body('title', 'Invalid title').trim().isString().isLength({min: 3}),
-    body('imageUrl', 'Invalid image Url').trim().isURL(),
     body('price', 'Invalid price').isFloat(),
     body('description', 'Invalid description').trim().isLength({min: 5, max: 200})
 ], isAuthMiddleWare, adminController.postEditProduct);

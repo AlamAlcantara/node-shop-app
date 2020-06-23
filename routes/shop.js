@@ -20,10 +20,14 @@ router.get('/orders', isAuthMiddleWare, shopController.getOrders);
 
 router.get('/orders/:orderId', isAuthMiddleWare, shopController.getInvoice);
 
-router.post('/create-order', isAuthMiddleWare, shopController.postOrder);
+// router.post('/create-order', isAuthMiddleWare, shopController.postOrder);
 
+router.get('/checkout', isAuthMiddleWare, shopController.getCheckout);
 
-// router.get('/checkout', shopController.getCheckout);
+router.get('/checkout/success', isAuthMiddleWare, shopController.getCheckoutSucess);
+
+router.get('/checkout/cancel', isAuthMiddleWare, shopController.getCheckout);
+
 
 
 module.exports = router;

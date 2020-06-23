@@ -27,6 +27,6 @@ router.post('/edit-product',[
     body('description', 'Invalid description').trim().isLength({min: 5, max: 200})
 ], isAuthMiddleWare, adminController.postEditProduct);
 
-router.post('/delete-product', isAuthMiddleWare, adminController.postDeleteProduct);
+router.delete('/product/:productId', isAuthMiddleWare, adminController.deleteProduct);
 
 module.exports = router;
